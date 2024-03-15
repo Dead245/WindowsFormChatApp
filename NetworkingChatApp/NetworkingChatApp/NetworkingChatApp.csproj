@@ -8,8 +8,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="C:\Users\Colton\source\repos\WindowsFormChatApp\NetworkingChatApp\Form1.cs" Link="Form1.cs" />
-  </ItemGroup>
-
 </Project>

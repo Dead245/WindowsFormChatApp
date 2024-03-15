@@ -33,12 +33,9 @@
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConnectButton.Location = new System.Drawing.Point(240, 242);
+            this.ConnectButton.Location = new System.Drawing.Point(304, 251);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(294, 98);
+            this.ConnectButton.Size = new System.Drawing.Size(164, 68);
             this.ConnectButton.TabIndex = 0;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
@@ -52,6 +49,7 @@
             this.Controls.Add(this.ConnectButton);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

@@ -22,9 +22,7 @@ var tcpStream = client.GetStream();
 
 int readTotal;
 
-Console.WriteLine("Client Connected!");
 //Listen for client input
 while ((readTotal = tcpStream.Read(buffer, 0,buffer.Length)) != 0){
-    Console.WriteLine("Client Connected!");
     inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 }

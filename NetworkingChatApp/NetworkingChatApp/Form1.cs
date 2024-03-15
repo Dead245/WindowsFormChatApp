@@ -20,7 +20,7 @@ namespace NetworkingChatApp
             using TcpClient tcpClient = new TcpClient();
 
             if (!tcpClient.Connected) tcpClient.Connect(hostAddress, port);
-            ConnectButton.Text= "Connected!";
+            ConnectButton.Text = "Connected!";
         }
     }
 }

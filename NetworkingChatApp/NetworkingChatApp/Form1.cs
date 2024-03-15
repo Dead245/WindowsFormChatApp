@@ -5,7 +5,7 @@ namespace NetworkingChatApp
 {
     public partial class Form1 : Form
     {
-
+        //Will change for user to input these later
         int port = 52100;
         IPAddress hostAddress = IPAddress.Parse("127.0.0.1");
 

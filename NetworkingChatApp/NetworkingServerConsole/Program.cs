@@ -31,5 +31,6 @@ while (true)
     {
         inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
         Console.WriteLine(inputtedMessage);
+        inputtedMessage = null;
     }
 }

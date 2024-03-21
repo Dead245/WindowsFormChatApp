@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,7 +17,6 @@ namespace NetworkingChatApp
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
@@ -43,15 +43,33 @@ namespace NetworkingChatApp
         {
             var message = Encoding.UTF8.GetBytes(InputBox.Text);
             tcpClient.GetStream().Write(message, 0, message.Length);
-            
             InputBox.Clear();
             InputBox.Focus();
         }
 
         private void ServerMessageReceived(IAsyncResult result) {
-            if (result.IsCompleted) {
+            if (result.IsCompleted && tcpClient.Connected) {
+                var bytesIn = tcpClient.GetStream().EndRead(result);
+                if (bytesIn > 0) { 
+                    byte[] temp = new byte[bytesIn];
+                    Array.Copy(buffer, 0, temp, 0, bytesIn);
+                    string stringInput = Encoding.UTF8.GetString(temp);
+
+                    MessageListBox.Items.Add(stringInput);
+                    MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
+                    MessageBox.Show(stringInput);
+                }
+                Array.Clear(buffer, 0, bytesIn);
+                
+                tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
                 MessageListBox.Items.Add("Server sent message!");
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+                tcpClient.GetStream().Close();
+                tcpClient.Close();
         }
     }
 }

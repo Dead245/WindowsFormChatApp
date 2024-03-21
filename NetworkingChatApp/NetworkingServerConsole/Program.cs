@@ -30,5 +30,6 @@ while (true)
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
         inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+        Console.WriteLine(inputtedMessage);
     }
 }

@@ -20,7 +20,23 @@ namespace NetworkingChatApp
             using TcpClient tcpClient = new TcpClient();
 
             if (!tcpClient.Connected) tcpClient.Connect(hostAddress, port);
-            ConnectButton.Text = "Connected!";
+            ConnectButton.Text = "Disconnect";
+            MessageListBox.Items.Add("Connected to Server: " + hostAddress + ":" + port);
+            
+            /*Disable input for username/server boxes when connected to a server 
+              And Enable the text/send box */
+            UsernameBox.Enabled = false;
+            ServerAddressBox.Enabled = false;
+            PortBox.Enabled = false;
+            
+            InputBox.Enabled = true;
+            SendMessageButton.Enabled = true;
+
+        }
+
+        private void SendMessageButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Send Button Clicked");
         }
     }
 }

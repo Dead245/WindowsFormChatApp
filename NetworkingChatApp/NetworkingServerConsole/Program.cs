@@ -17,8 +17,6 @@ Console.WriteLine("Server Started!");
 byte[] buffer = new byte[1024];
 string inputtedMessage;
 
-
-
 //Enter Listening loop
 while (true)
 {

@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.ConnectButton = new System.Windows.Forms.Button();
-            this.portBox = new System.Windows.Forms.TextBox();
-            this.serverAddressBox = new System.Windows.Forms.TextBox();
+            this.PortBox = new System.Windows.Forms.TextBox();
+            this.ServerAddressBox = new System.Windows.Forms.TextBox();
             this.ServerAddressLabel = new System.Windows.Forms.Label();
             this.PortLabel = new System.Windows.Forms.Label();
-            this.inputBox = new System.Windows.Forms.TextBox();
+            this.InputBox = new System.Windows.Forms.TextBox();
             this.UserList = new System.Windows.Forms.ListView();
             this.UserListLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.UsernameBox = new System.Windows.Forms.TextBox();
+            this.MessageListBox = new System.Windows.Forms.ListBox();
+            this.SendMessageButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ConnectButton
@@ -45,27 +47,31 @@
             this.ConnectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConnectButton.Location = new System.Drawing.Point(595, 412);
+            this.ConnectButton.Location = new System.Drawing.Point(688, 412);
             this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(193, 26);
+            this.ConnectButton.Size = new System.Drawing.Size(100, 26);
             this.ConnectButton.TabIndex = 0;
             this.ConnectButton.Text = "Connect";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
-            // portBox
+            // PortBox
             // 
-            this.portBox.Location = new System.Drawing.Point(688, 383);
-            this.portBox.Name = "portBox";
-            this.portBox.Size = new System.Drawing.Size(100, 23);
-            this.portBox.TabIndex = 1;
+            this.PortBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PortBox.Location = new System.Drawing.Point(688, 383);
+            this.PortBox.Name = "PortBox";
+            this.PortBox.Size = new System.Drawing.Size(100, 23);
+            this.PortBox.TabIndex = 1;
             // 
-            // serverAddressBox
+            // ServerAddressBox
             // 
-            this.serverAddressBox.Location = new System.Drawing.Point(688, 354);
-            this.serverAddressBox.Name = "serverAddressBox";
-            this.serverAddressBox.Size = new System.Drawing.Size(100, 23);
-            this.serverAddressBox.TabIndex = 2;
+            this.ServerAddressBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ServerAddressBox.Location = new System.Drawing.Point(688, 354);
+            this.ServerAddressBox.Name = "ServerAddressBox";
+            this.ServerAddressBox.Size = new System.Drawing.Size(100, 23);
+            this.ServerAddressBox.TabIndex = 2;
             // 
             // ServerAddressLabel
             // 
@@ -85,13 +91,13 @@
             this.PortLabel.TabIndex = 4;
             this.PortLabel.Text = "Port:";
             // 
-            // inputBox
+            // InputBox
             // 
-            this.inputBox.Location = new System.Drawing.Point(139, 413);
-            this.inputBox.MaxLength = 1024;
-            this.inputBox.Name = "inputBox";
-            this.inputBox.Size = new System.Drawing.Size(450, 23);
-            this.inputBox.TabIndex = 5;
+            this.InputBox.Location = new System.Drawing.Point(139, 413);
+            this.InputBox.MaxLength = 1024;
+            this.InputBox.Name = "InputBox";
+            this.InputBox.Size = new System.Drawing.Size(450, 23);
+            this.InputBox.TabIndex = 5;
             // 
             // UserList
             // 
@@ -119,27 +125,51 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Username:";
             // 
-            // textBox1
+            // UsernameBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(688, 325);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 23);
-            this.textBox1.TabIndex = 9;
+            this.UsernameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.UsernameBox.Location = new System.Drawing.Point(688, 325);
+            this.UsernameBox.Name = "UsernameBox";
+            this.UsernameBox.Size = new System.Drawing.Size(100, 23);
+            this.UsernameBox.TabIndex = 9;
+            // 
+            // MessageListBox
+            // 
+            this.MessageListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MessageListBox.FormattingEnabled = true;
+            this.MessageListBox.ItemHeight = 15;
+            this.MessageListBox.Location = new System.Drawing.Point(140, 27);
+            this.MessageListBox.Name = "MessageListBox";
+            this.MessageListBox.Size = new System.Drawing.Size(449, 379);
+            this.MessageListBox.TabIndex = 10;
+            // 
+            // SendMessageButton
+            // 
+            this.SendMessageButton.Location = new System.Drawing.Point(595, 412);
+            this.SendMessageButton.Name = "SendMessageButton";
+            this.SendMessageButton.Size = new System.Drawing.Size(87, 26);
+            this.SendMessageButton.TabIndex = 11;
+            this.SendMessageButton.Text = "Send";
+            this.SendMessageButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.SendMessageButton);
+            this.Controls.Add(this.MessageListBox);
+            this.Controls.Add(this.UsernameBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UserListLabel);
             this.Controls.Add(this.UserList);
-            this.Controls.Add(this.inputBox);
+            this.Controls.Add(this.InputBox);
             this.Controls.Add(this.PortLabel);
             this.Controls.Add(this.ServerAddressLabel);
-            this.Controls.Add(this.serverAddressBox);
-            this.Controls.Add(this.portBox);
+            this.Controls.Add(this.ServerAddressBox);
+            this.Controls.Add(this.PortBox);
             this.Controls.Add(this.ConnectButton);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -151,14 +181,16 @@
         #endregion
 
         private Button ConnectButton;
-        private TextBox portBox;
-        private TextBox serverAddressBox;
+        private TextBox PortBox;
+        private TextBox ServerAddressBox;
         private Label ServerAddressLabel;
         private Label PortLabel;
-        private TextBox inputBox;
+        private TextBox InputBox;
         private ListView UserList;
         private Label UserListLabel;
         private Label label1;
-        private TextBox textBox1;
+        private TextBox UsernameBox;
+        private ListBox MessageListBox;
+        private Button SendMessageButton;
     }
 }

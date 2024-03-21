@@ -43,6 +43,8 @@ namespace NetworkingChatApp
         {
             var message = Encoding.UTF8.GetBytes(InputBox.Text);
             tcpClient.GetStream().Write(message, 0, message.Length);
+            
+            //Clear and refocus text box so user can keep typing
             InputBox.Clear();
             InputBox.Focus();
         }
@@ -55,6 +57,7 @@ namespace NetworkingChatApp
                     Array.Copy(buffer, 0, temp, 0, bytesIn);
                     string stringInput = Encoding.UTF8.GetString(temp);
                     
+                    //Use BeginInvoke to solve accessing MessageListBox on a different thread
                     BeginInvoke((Action)(() => {
                         MessageListBox.Items.Add(stringInput);
                         MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
@@ -62,13 +65,15 @@ namespace NetworkingChatApp
                     
                 }
                 Array.Clear(buffer, 0, bytesIn);
-                
+
+                //Restart reading for more input from server
                 tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
             }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+                //Close Stream and Client once user closes the form window
                 tcpClient.GetStream().Close();
                 tcpClient.Close();
         }

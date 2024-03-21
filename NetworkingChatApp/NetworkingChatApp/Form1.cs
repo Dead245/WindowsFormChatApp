@@ -54,15 +54,16 @@ namespace NetworkingChatApp
                     byte[] temp = new byte[bytesIn];
                     Array.Copy(buffer, 0, temp, 0, bytesIn);
                     string stringInput = Encoding.UTF8.GetString(temp);
-
-                    MessageListBox.Items.Add(stringInput);
-                    MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
-                    MessageBox.Show(stringInput);
+                    
+                    BeginInvoke((Action)(() => {
+                        MessageListBox.Items.Add(stringInput);
+                        MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
+                    }));
+                    
                 }
                 Array.Clear(buffer, 0, bytesIn);
                 
                 tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
-                MessageListBox.Items.Add("Server sent message!");
             }
         }
 

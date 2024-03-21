@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-Console.WriteLine("Not done yet!");
+string welcomeMessage = "Welcome to the server!";
 
 int port = 52100;
 var hostAddress = IPAddress.Parse("127.0.0.1");
@@ -22,7 +22,9 @@ while (true)
 {
     using TcpClient client = tcpListener.AcceptTcpClient();
     var tcpStream = client.GetStream();
-    Console.WriteLine("Client Connected!");
+    
+    var message = Encoding.UTF8.GetBytes(welcomeMessage);
+    client.GetStream().Write(message, 0, message.Length);
 
     int readTotal;
 
@@ -30,7 +32,10 @@ while (true)
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
         inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-        Console.WriteLine(inputtedMessage);
+
+        //Just sends the message back to user for now
+        client.GetStream().Write(buffer, 0, buffer.Length);
+        
         buffer = new byte[1024];
     }
 }

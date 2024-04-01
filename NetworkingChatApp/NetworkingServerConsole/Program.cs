@@ -13,15 +13,15 @@ tcpListener.Start();
 
 Console.WriteLine("Server Started!");
 
-//1024 bite size for incoming messages
-byte[] buffer = new byte[1024];
-string inputtedMessage;
-
 //Enter Listening loop
 while (true)
 {
     TcpClient client = tcpListener.AcceptTcpClient();
+
+    if (client != null) Console.WriteLine("Accepted Connection!");
+
     ThreadPool.QueueUserWorkItem(HandleClient,client);
+    client = null;
 }
 
 void HandleClient(object? obj) {
@@ -35,14 +35,19 @@ void HandleClient(object? obj) {
 
     int readTotal;
 
+    //1024 bite size for incoming messages
+    byte[] buffer = new byte[1024];
+    string inputtedMessage;
+
     //Listen for client input
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
-        inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+        //inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 
         //Just sends the message back to user for now
         client.GetStream().Write(buffer, 0, buffer.Length);
-
+        
+        //Clear byte data
         buffer = new byte[1024];
     }
 }

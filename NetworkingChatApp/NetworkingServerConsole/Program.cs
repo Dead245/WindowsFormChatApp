@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-string welcomeMessage = "Welcome to the server!";
+string welcomeMessage = "Welcome to your local server!";
 
 int port = 52100;
 var hostAddress = IPAddress.Parse("127.0.0.1");
@@ -20,9 +20,16 @@ string inputtedMessage;
 //Enter Listening loop
 while (true)
 {
-    using TcpClient client = tcpListener.AcceptTcpClient();
-    var tcpStream = client.GetStream();
+    TcpClient client = tcpListener.AcceptTcpClient();
+    ThreadPool.QueueUserWorkItem(HandleClient,client);
+}
+
+void HandleClient(object? obj) {
     
+    TcpClient client = (TcpClient)obj;
+
+    var tcpStream = client.GetStream();
+
     var message = Encoding.UTF8.GetBytes(welcomeMessage);
     client.GetStream().Write(message, 0, message.Length);
 
@@ -35,7 +42,7 @@ while (true)
 
         //Just sends the message back to user for now
         client.GetStream().Write(buffer, 0, buffer.Length);
-        
+
         buffer = new byte[1024];
     }
 }

@@ -146,7 +146,7 @@
             this.MessageListBox.ItemHeight = 15;
             this.MessageListBox.Location = new System.Drawing.Point(140, 27);
             this.MessageListBox.Name = "MessageListBox";
-            this.MessageListBox.Size = new System.Drawing.Size(547, 454);
+            this.MessageListBox.Size = new System.Drawing.Size(547, 439);
             this.MessageListBox.TabIndex = 10;
             // 
             // SendMessageButton

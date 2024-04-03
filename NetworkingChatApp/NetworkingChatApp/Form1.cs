@@ -39,7 +39,7 @@ namespace NetworkingChatApp
         }
 
         private void SendMessageButton_Click(object sender, EventArgs e)
-        {
+        {   //TODO: encode message with username and etc before writing to server
             var message = Encoding.UTF8.GetBytes(InputBox.Text);
             tcpClient.GetStream().Write(message, 0, message.Length);
             
@@ -75,6 +75,8 @@ namespace NetworkingChatApp
                 //Close Stream and Client once user closes the form window
                 tcpClient.GetStream().Close();
                 tcpClient.Close();
+
+            //TODO: notify server of client disconnection
         }
     }
 }

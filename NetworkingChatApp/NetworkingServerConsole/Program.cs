@@ -57,7 +57,8 @@ void HandleClientConnection(object obj) {
 }
 
 void HandleClientMessage(byte[] buffer) {
-    
+    //TODO: parse message in buffer to determine username and etc
+
     foreach (TcpClient client in clientList)
     {
         client.GetStream().Write(buffer, 0, buffer.Length);

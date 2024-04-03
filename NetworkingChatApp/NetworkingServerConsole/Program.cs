@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Net;
 using System.Net.Sockets;
-using System.Numerics;
 using System.Text;
-
-string welcomeMessage = "Welcome to your local server!";
 
 int port = 52100;
 var hostAddress = IPAddress.Parse("127.0.0.1");
 
 ArrayList clientList = new ArrayList();
+
+string welcomeMessage = "Welcome to your local server!";
+string userCountMessage;
 
 //Setup and start tcp server
 TcpListener tcpListener = new TcpListener(hostAddress, port);
@@ -35,17 +35,16 @@ void HandleClientConnection(object obj) {
 
     var tcpStream = client.GetStream();
 
-    var serverMessage = Encoding.UTF8.GetBytes(welcomeMessage);
+    userCountMessage = "User Count : " + clientList.Count;
+    
+    var serverMessage = Encoding.UTF8.GetBytes(welcomeMessage + " " + userCountMessage);
     client.GetStream().Write(serverMessage, 0, serverMessage.Length);
 
-    serverMessage = Encoding.UTF8.GetBytes("Users Online: " + clientList.Count);
-    client.GetStream().Write(serverMessage, 0, serverMessage.Length);
 
     int readTotal;
 
     //1024 bite size for incoming messages
     byte[] buffer = new byte[1024];
-    string inputtedMessage;
 
     //Listen for client input
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)

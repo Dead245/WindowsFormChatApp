@@ -1,11 +1,15 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 
 string welcomeMessage = "Welcome to your local server!";
 
 int port = 52100;
 var hostAddress = IPAddress.Parse("127.0.0.1");
+
+ArrayList clientList = new ArrayList();
 
 //Setup and start tcp server
 TcpListener tcpListener = new TcpListener(hostAddress, port);
@@ -19,19 +23,23 @@ while (true)
     TcpClient client = tcpListener.AcceptTcpClient();
 
     if (client != null) Console.WriteLine("Accepted Connection!");
+    clientList.Add(client);
 
-    ThreadPool.QueueUserWorkItem(HandleClient,client);
+    ThreadPool.QueueUserWorkItem(HandleClientConnection,client);
     client = null;
 }
 
-void HandleClient(object? obj) {
+void HandleClientConnection(object obj) {
     
     TcpClient client = (TcpClient)obj;
 
     var tcpStream = client.GetStream();
 
-    var message = Encoding.UTF8.GetBytes(welcomeMessage);
-    client.GetStream().Write(message, 0, message.Length);
+    var serverMessage = Encoding.UTF8.GetBytes(welcomeMessage);
+    client.GetStream().Write(serverMessage, 0, serverMessage.Length);
+
+    serverMessage = Encoding.UTF8.GetBytes("Users Online: " + clientList.Count);
+    client.GetStream().Write(serverMessage, 0, serverMessage.Length);
 
     int readTotal;
 
@@ -42,12 +50,17 @@ void HandleClient(object? obj) {
     //Listen for client input
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
-        //inputtedMessage = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-
-        //Just sends the message back to user for now
-        client.GetStream().Write(buffer, 0, buffer.Length);
+        HandleClientMessage(buffer);
         
         //Clear byte data
         buffer = new byte[1024];
+    }
+}
+
+void HandleClientMessage(byte[] buffer) {
+    
+    foreach (TcpClient client in clientList)
+    {
+        client.GetStream().Write(buffer, 0, buffer.Length);
     }
 }

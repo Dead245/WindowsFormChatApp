@@ -133,6 +133,7 @@
             // 
             this.UsernameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.UsernameBox.Location = new System.Drawing.Point(786, 27);
+            this.UsernameBox.MaxLength = 32;
             this.UsernameBox.Name = "UsernameBox";
             this.UsernameBox.Size = new System.Drawing.Size(100, 23);
             this.UsernameBox.TabIndex = 9;

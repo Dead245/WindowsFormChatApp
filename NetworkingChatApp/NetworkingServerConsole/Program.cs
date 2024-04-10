@@ -22,7 +22,7 @@ while (true)
 {
     TcpClient client = tcpListener.AcceptTcpClient();
 
-    if (client != null) Console.WriteLine("Accepted Connection!");
+    if (client != null) Console.WriteLine("Accepted Connection! " + client.GetStream().Socket.AddressFamily);
     clientList.Add(client);
 
     ThreadPool.QueueUserWorkItem(HandleClientConnection,client);
@@ -43,8 +43,8 @@ void HandleClientConnection(object obj) {
 
     int readTotal;
 
-    //1024 bite size for incoming messages
-    byte[] buffer = new byte[1024];
+    //1036 bite size for incoming messages
+    byte[] buffer = new byte[1036];
 
     //Listen for client input
     while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
@@ -52,7 +52,7 @@ void HandleClientConnection(object obj) {
         HandleClientMessage(buffer);
         
         //Clear byte data
-        buffer = new byte[1024];
+        buffer = new byte[1036];
     }
 }
 

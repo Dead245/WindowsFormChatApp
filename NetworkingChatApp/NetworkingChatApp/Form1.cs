@@ -5,13 +5,24 @@ using System.Text;
 namespace NetworkingChatApp
 {
     public partial class Form1 : Form
-    {
-        TcpClient tcpClient = new TcpClient();
-        byte[] buffer = new byte[1024];
+    {   /*
+        Username is saved as byte[32]
+        Messages are byte[1024]
+        
+        Sent messages are 'username + message'
+        
+        Utilize the difference of the size of the byte[]
+        to determine what type of message is being received
+        */
 
+        string username, ipAddresss;
         //Will change for user to input these later
         int port = 52100;
         IPAddress hostAddress = IPAddress.Parse("127.0.0.1");
+
+        TcpClient tcpClient = new TcpClient();
+        byte[] buffer = new byte[1024];
+
 
         public Form1()
         {
@@ -21,20 +32,35 @@ namespace NetworkingChatApp
         private void ConnectButton_Click(object sender, EventArgs e)
         {
 
-            if (!tcpClient.Connected) tcpClient.Connect(hostAddress, port);
-            tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
+            if (!tcpClient.Connected)
+            {
+                tcpClient = new TcpClient();
+                tcpClient.Connect(hostAddress, port);
+                tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
 
-            ConnectButton.Text = "Disconnect";
-            MessageListBox.Items.Add("Connected to Server: " + hostAddress + ":" + port);
-            
-            /*Disable input for username/server boxes when connected to a server 
-              And Enable the text/send box */
-            UsernameBox.Enabled = false;
-            ServerAddressBox.Enabled = false;
-            PortBox.Enabled = false;
-            
-            InputBox.Enabled = true;
-            SendMessageButton.Enabled = true;
+                username = UsernameBox.Text;
+
+                ConnectButton.Text = "Disconnect";
+                MessageListBox.Items.Add("Connected to Server: " + hostAddress + ":" + port);
+
+                /*Disable input for username/server boxes when connected to a server 
+                  And Enable the text/send box */
+                UsernameBox.Enabled = false;
+                ServerAddressBox.Enabled = false;
+                PortBox.Enabled = false;
+
+                InputBox.Enabled = true;
+                SendMessageButton.Enabled = true;
+            }
+            else {
+                DisconnectClient();
+                UsernameBox.Enabled = true;
+                ServerAddressBox.Enabled = true;
+                PortBox.Enabled = true;
+
+                InputBox.Enabled = false;
+                SendMessageButton.Enabled = false;
+            }
 
         }
 
@@ -69,14 +95,19 @@ namespace NetworkingChatApp
                 tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
             }
         }
-
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        void DisconnectClient()
         {
-                //Close Stream and Client once user closes the form window
+            if (tcpClient.Connected) {
                 tcpClient.GetStream().Close();
                 tcpClient.Close();
-
-            //TODO: notify server of client disconnection
+            }
+            //TODO: Tell server who is disconnecting
+            
+        }
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //Close Stream and Client once user closes the form window
+            DisconnectClient();
         }
     }
 }

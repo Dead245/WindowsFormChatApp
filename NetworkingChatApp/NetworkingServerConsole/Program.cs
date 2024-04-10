@@ -54,6 +54,9 @@ void HandleClientConnection(object obj) {
         //Clear byte data
         buffer = new byte[1036];
     }
+    //Only continues once client disconnects, as Read() will completes immediately with '0'
+    Console.WriteLine("Client Disconnected");
+    clientList.Remove(client);
 }
 
 void HandleClientMessage(byte[] buffer) {

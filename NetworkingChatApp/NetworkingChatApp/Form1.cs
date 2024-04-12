@@ -6,7 +6,7 @@ namespace NetworkingChatApp
 {
     public partial class Form1 : Form
     {   
-        string username, ipAddresss;
+        byte[] username, ipAddresss;
         //Will change for user to input these later
         int port = 52100;
         IPAddress hostAddress = IPAddress.Parse("127.0.0.1");
@@ -29,7 +29,9 @@ namespace NetworkingChatApp
                 tcpClient.Connect(hostAddress, port);
                 tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
 
-                username = UsernameBox.Text;
+                //Send server username as first message from this client connection
+                username = Encoding.UTF8.GetBytes(UsernameBox.Text);
+                tcpClient.GetStream().Write(username, 0, username.Length);
 
                 ConnectButton.Text = "Disconnect";
                 MessageListBox.Items.Add("Connected to Server: " + hostAddress + ":" + port);
@@ -45,6 +47,7 @@ namespace NetworkingChatApp
             }
             else {
                 DisconnectClient();
+                ConnectButton.Text = "Connect";
                 UsernameBox.Enabled = true;
                 ServerAddressBox.Enabled = true;
                 PortBox.Enabled = true;
@@ -77,6 +80,7 @@ namespace NetworkingChatApp
                     BeginInvoke((Action)(() => {
                         MessageListBox.Items.Add(stringInput);
                         MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
+                        InputBox.Focus();
                     }));
                     
                 }

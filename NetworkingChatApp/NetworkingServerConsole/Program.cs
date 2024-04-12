@@ -23,8 +23,6 @@ while (true)
     TcpClient client = tcpListener.AcceptTcpClient();
 
     if (client != null) Console.WriteLine("Accepted Connection!");
-
-    //TODO: Get username from client and add it into value of clientDict.
     clientDict.Add(client, "");
 
     ThreadPool.QueueUserWorkItem(HandleClientConnection,client);
@@ -32,13 +30,14 @@ while (true)
 }
 
 void HandleClientConnection(object obj) {
-    
+    bool gotUsername = false;
+
     TcpClient client = (TcpClient)obj;
 
     var tcpStream = client.GetStream();
 
-    userCountMessage = "User Count : " + clientDict.Count;
-    
+    userCountMessage = $"User Count: {clientDict.Count}";
+
     var serverMessage = Encoding.UTF8.GetBytes(welcomeMessage + " " + userCountMessage);
     client.GetStream().Write(serverMessage, 0, serverMessage.Length);
 
@@ -48,7 +47,16 @@ void HandleClientConnection(object obj) {
     //Listen for client input
     while ((tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
-        HandleClientMessage(buffer);
+        //Is there a better way?
+        if (!gotUsername) {
+            gotUsername = true;
+            clientDict[client] = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            clientDict[client]= clientDict[client].Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
+
+            continue;
+        }
+
+        HandleClientMessage(buffer, clientDict[client]);
         
         //Clear byte data
         buffer = new byte[1024];
@@ -58,11 +66,17 @@ void HandleClientConnection(object obj) {
     clientDict.Remove(client);
 }
 
-void HandleClientMessage(byte[] buffer) {
-    //TODO: parse message in buffer to determine username and etc
+void HandleClientMessage(byte[] buffer, string username) {
+
+    string message = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+    message = message.Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
     
+    message = $"{username}: {message}";
+
+    byte[] formattedMessage = Encoding.UTF8.GetBytes(message);
+
     foreach (KeyValuePair<TcpClient,string> entry in clientDict)
     {
-        entry.Key.GetStream().Write(buffer, 0, buffer.Length);
+        entry.Key.GetStream().Write(formattedMessage, 0, formattedMessage.Length);
     }
 }

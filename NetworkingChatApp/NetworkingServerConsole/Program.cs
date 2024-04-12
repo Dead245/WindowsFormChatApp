@@ -42,14 +42,11 @@ void HandleClientConnection(object obj) {
     var serverMessage = Encoding.UTF8.GetBytes(welcomeMessage + " " + userCountMessage);
     client.GetStream().Write(serverMessage, 0, serverMessage.Length);
 
-
-    int readTotal;
-
     //1024 bite size for incoming messages
     byte[] buffer = new byte[1024];
 
     //Listen for client input
-    while ((readTotal = tcpStream.Read(buffer, 0, buffer.Length)) != 0)
+    while ((tcpStream.Read(buffer, 0, buffer.Length)) != 0)
     {
         HandleClientMessage(buffer);
         

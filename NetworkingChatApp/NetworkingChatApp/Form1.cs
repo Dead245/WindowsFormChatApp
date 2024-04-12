@@ -5,16 +5,7 @@ using System.Text;
 namespace NetworkingChatApp
 {
     public partial class Form1 : Form
-    {   /*
-        Username is saved as byte[32]
-        Messages are byte[1024]
-        
-        Sent messages are 'username + message'
-        
-        Utilize the difference of the size of the byte[]
-        to determine what type of message is being received
-        */
-
+    {   
         string username, ipAddresss;
         //Will change for user to input these later
         int port = 52100;

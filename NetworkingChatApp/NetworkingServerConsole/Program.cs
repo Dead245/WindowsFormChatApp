@@ -53,6 +53,11 @@ void HandleClientConnection(object obj) {
             clientDict[client] = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
             clientDict[client]= clientDict[client].Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
 
+            string joinMsgString = $"{clientDict[client]} has joined!";
+            byte[] joinMsgByte = Encoding.UTF8.GetBytes(joinMsgString, 0, joinMsgString.Length);
+            
+            serverNotification(joinMsgByte);
+
             continue;
         }
 
@@ -75,8 +80,13 @@ void HandleClientMessage(byte[] buffer, string username) {
 
     byte[] formattedMessage = Encoding.UTF8.GetBytes(message);
 
-    foreach (KeyValuePair<TcpClient,string> entry in clientDict)
-    {
+    foreach (KeyValuePair<TcpClient,string> entry in clientDict) {
         entry.Key.GetStream().Write(formattedMessage, 0, formattedMessage.Length);
+    }
+}
+
+void serverNotification(byte[] notification) {
+    foreach (KeyValuePair<TcpClient, string> entry in clientDict) {
+        entry.Key.GetStream().Write(notification, 0, notification.Length);
     }
 }

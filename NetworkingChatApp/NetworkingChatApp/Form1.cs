@@ -107,7 +107,7 @@ namespace NetworkingChatApp
         }
 
         private void AddMessage(string msg) {
-            MsgRichTextBox.Text += $"{msg}\n";
+            MsgRichTextBox.AppendText($"{msg}\n");
         }
     }
 }

@@ -55,7 +55,6 @@ void HandleClientConnection(object obj) {
 
             if (username.Equals("") || username.Equals("?:Def")) {
                 username = $"User{clientDict.Count}";
-                Console.WriteLine(username);
             }
             //Obtain username
             gotUsername = true;

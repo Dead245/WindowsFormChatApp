@@ -14,7 +14,6 @@ namespace NetworkingChatApp
         TcpClient tcpClient = new TcpClient();
         byte[] buffer = new byte[1024];
 
-
         public Form1()
         {
             InitializeComponent();
@@ -37,7 +36,7 @@ namespace NetworkingChatApp
                 tcpClient.GetStream().Write(username, 0, username.Length);
 
                 ConnectButton.Text = "Disconnect";
-                MessageListBox.Items.Add("Connected to Server: " + hostAddress + ":" + port);
+                MessageListBox.Items.Add($"Connected to Server: {hostAddress}: {port}");
 
                 /*Disable input for username/server boxes when connected to a server 
                   And Enable the text/send box */
@@ -93,7 +92,7 @@ namespace NetworkingChatApp
                 tcpClient.GetStream().BeginRead(buffer, 0, buffer.Length, ServerMessageReceived, null);
             }
         }
-        void DisconnectClient()
+        private void DisconnectClient()
         {
             if (tcpClient.Connected) {
                 tcpClient.GetStream().Close();
@@ -101,6 +100,7 @@ namespace NetworkingChatApp
             }
             
         }
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             //Close Stream and Client once user closes the form window

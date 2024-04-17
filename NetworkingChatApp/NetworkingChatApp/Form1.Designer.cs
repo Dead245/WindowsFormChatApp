@@ -38,8 +38,8 @@
             this.UserListLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.UsernameBox = new System.Windows.Forms.TextBox();
-            this.MessageListBox = new System.Windows.Forms.ListBox();
             this.SendMessageButton = new System.Windows.Forms.Button();
+            this.MsgRichTextBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // ConnectButton
@@ -138,18 +138,6 @@
             this.UsernameBox.Size = new System.Drawing.Size(100, 23);
             this.UsernameBox.TabIndex = 9;
             // 
-            // MessageListBox
-            // 
-            this.MessageListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.MessageListBox.FormattingEnabled = true;
-            this.MessageListBox.ItemHeight = 15;
-            this.MessageListBox.Location = new System.Drawing.Point(140, 27);
-            this.MessageListBox.Name = "MessageListBox";
-            this.MessageListBox.Size = new System.Drawing.Size(547, 439);
-            this.MessageListBox.TabIndex = 10;
-            // 
             // SendMessageButton
             // 
             this.SendMessageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -162,14 +150,25 @@
             this.SendMessageButton.UseVisualStyleBackColor = true;
             this.SendMessageButton.Click += new System.EventHandler(this.SendMessageButton_Click);
             // 
+            // MsgRichTextBox
+            // 
+            this.MsgRichTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.MsgRichTextBox.Location = new System.Drawing.Point(144, 28);
+            this.MsgRichTextBox.Name = "MsgRichTextBox";
+            this.MsgRichTextBox.ReadOnly = true;
+            this.MsgRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.MsgRichTextBox.Size = new System.Drawing.Size(543, 453);
+            this.MsgRichTextBox.TabIndex = 12;
+            this.MsgRichTextBox.Text = "";
+            // 
             // Form1
             // 
             this.AcceptButton = this.SendMessageButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(898, 535);
+            this.Controls.Add(this.MsgRichTextBox);
             this.Controls.Add(this.SendMessageButton);
-            this.Controls.Add(this.MessageListBox);
             this.Controls.Add(this.UsernameBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UserListLabel);
@@ -203,7 +202,7 @@
         private Label UserListLabel;
         private Label label1;
         private TextBox UsernameBox;
-        private ListBox MessageListBox;
         private Button SendMessageButton;
+        private RichTextBox MsgRichTextBox;
     }
 }

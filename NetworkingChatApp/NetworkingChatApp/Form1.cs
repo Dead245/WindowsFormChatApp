@@ -36,7 +36,7 @@ namespace NetworkingChatApp
                 tcpClient.GetStream().Write(username, 0, username.Length);
 
                 ConnectButton.Text = "Disconnect";
-                MessageListBox.Items.Add($"Connected to Server: {hostAddress}: {port}");
+                AddMessage($"Connected to Server: {hostAddress}: {port}");
 
                 /*Disable input for username/server boxes when connected to a server 
                   And Enable the text/send box */
@@ -80,8 +80,7 @@ namespace NetworkingChatApp
                     
                     //Use BeginInvoke to solve accessing MessageListBox on a different thread
                     BeginInvoke((Action)(() => {
-                        MessageListBox.Items.Add(stringInput);
-                        MessageListBox.SelectedIndex = MessageListBox.Items.Count - 1;
+                        AddMessage(stringInput);
                         InputBox.Focus();
                     }));
                     
@@ -105,6 +104,10 @@ namespace NetworkingChatApp
         {
             //Close Stream and Client once user closes the form window
             DisconnectClient();
+        }
+
+        private void AddMessage(string msg) {
+            MsgRichTextBox.Text += $"{msg}\n";
         }
     }
 }

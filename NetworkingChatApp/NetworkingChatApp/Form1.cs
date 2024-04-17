@@ -31,7 +31,8 @@ namespace NetworkingChatApp
 
                 //Send server username as first message from this client connection
                 username = Encoding.UTF8.GetBytes(UsernameBox.Text);
-                if (UsernameBox.Text == "") username = Encoding.UTF8.GetBytes("\\:Def");
+                //Set username to default if user did not enter anything.
+                if (UsernameBox.Text.Equals("")) username = Encoding.UTF8.GetBytes("?:Def");
 
                 tcpClient.GetStream().Write(username, 0, username.Length);
 

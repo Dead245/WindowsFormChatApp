@@ -49,14 +49,21 @@ void HandleClientConnection(object obj) {
     {
         //Is there a better way?
         if (!gotUsername) {
+            //Check username
+            string username = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            username = username.Trim();
+            username = username.Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
+
+            if (username.Equals("") || username.Equals("?:Def")) {
+                username = $"User{clientDict.Count}";
+                Console.WriteLine(username);
+            }
+            //Obtain username
             gotUsername = true;
-            clientDict[client] = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            clientDict[client] = username;
             clientDict[client]= clientDict[client].Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
 
-            string joinMsgString = $"{clientDict[client]} has joined!";
-            byte[] joinMsgByte = Encoding.UTF8.GetBytes(joinMsgString, 0, joinMsgString.Length);
-            
-            serverNotification(joinMsgByte);
+            serverNotification($"SERVER: {clientDict[client]} has joined!");
 
             continue;
         }
@@ -68,6 +75,7 @@ void HandleClientConnection(object obj) {
     }
     //Only continues once client disconnects, as Read() completes immediately with '0'
     Console.WriteLine("Client Disconnected");
+    serverNotification($"SERVER: {clientDict[client]} has left!");
     clientDict.Remove(client);
 }
 
@@ -85,7 +93,10 @@ void HandleClientMessage(byte[] buffer, string username) {
     }
 }
 
-void serverNotification(byte[] notification) {
+void serverNotification(string strNotif) {
+
+    byte[] notification = Encoding.UTF8.GetBytes(strNotif, 0, strNotif.Length);
+
     foreach (KeyValuePair<TcpClient, string> entry in clientDict) {
         entry.Key.GetStream().Write(notification, 0, notification.Length);
     }

@@ -112,12 +112,18 @@ namespace NetworkingChatApp
                     byte[] temp = new byte[bytesIn];
                     Array.Copy(buffer, 0, temp, 0, bytesIn);
                     string stringInput = Encoding.UTF8.GetString(temp);
-                    
-                    //Use BeginInvoke to solve accessing MessageListBox on a different thread
-                    BeginInvoke((Action)(() => {
-                        AddMessage(stringInput);
-                        InputBox.Focus();
-                    }));
+
+                    //Check if it is a UserList update
+                    if (stringInput.StartsWith("?:UserList")) {
+                        updateUserList(stringInput);
+                    } else {
+                        //Use BeginInvoke to solve accessing MessageListBox on a different thread
+                        BeginInvoke((Action)(() =>
+                        {
+                            AddMessage(stringInput);
+                            InputBox.Focus();
+                        }));
+                    }
                     
                 }
                 Array.Clear(buffer, 0, bytesIn);
@@ -143,6 +149,28 @@ namespace NetworkingChatApp
 
         private void AddMessage(string msg) {
             MsgRichTextBox.AppendText($"{msg}\n");
+        }
+
+        //Currently just updates the entire list when needing to update...
+        private void updateUserList(string listString) {
+            //Removes 0-9 due to needing to skip "?:UserList"
+            listString = listString.Remove(0,10);
+
+            string[] userList = listString.Split(':');
+            
+            BeginInvoke((Action)(() => { 
+                UserList.Items.Clear();
+
+                foreach (var item in userList)
+                {
+                    UserList.Items.Add(item);
+                }
+
+                //Sort user list
+                UserList.Sort();
+            }));
+            
+            
         }
     }
 }

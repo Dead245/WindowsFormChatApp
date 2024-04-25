@@ -2,7 +2,9 @@
 using System.Net.Sockets;
 using System.Text;
 
-/*If setting up over local connection, will not work if you use your IP*/
+/*If setting up over local connection, will not work if you use your IP
+  This setup could be improved by looking for byte size instead of certain string instances.
+ */
 
 int port = 52100;
 var hostAddress = IPAddress.Any;
@@ -23,7 +25,6 @@ while (true)
 {
     TcpClient client = tcpListener.AcceptTcpClient();
 
-    if (client != null) Console.WriteLine("Accepted Connection!");
     clientDict.Add(client, "");
 
     ThreadPool.QueueUserWorkItem(HandleClientConnection,client);
@@ -62,9 +63,8 @@ void HandleClientConnection(object obj) {
             gotUsername = true;
             clientDict[client] = username;
             clientDict[client]= clientDict[client].Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
-
-            serverNotification($"SERVER: {clientDict[client]} has joined!");
-
+            updateUserList();
+            
             continue;
         }
 
@@ -74,8 +74,8 @@ void HandleClientConnection(object obj) {
         buffer = new byte[1024];
     }
     //Only continues once client disconnects, as Read() completes immediately with '0'
-    serverNotification($"SERVER: {clientDict[client]} has left!");
     clientDict.Remove(client);
+    updateUserList();
 }
 
 void HandleClientMessage(byte[] buffer, string username) {
@@ -99,5 +99,19 @@ void serverNotification(string strNotif) {
 
     foreach (KeyValuePair<TcpClient, string> entry in clientDict) {
         entry.Key.GetStream().Write(notification, 0, notification.Length);
+    }
+}
+
+
+void updateUserList(){
+    string userListMsg = "?:UserList";
+    List<string> users = clientDict.Values.ToList();
+    foreach (var item in users) {
+        userListMsg += $"{item}:";
+    }
+
+    byte[] formattedMessage = Encoding.UTF8.GetBytes(userListMsg, 0, userListMsg.Length);
+    foreach (KeyValuePair<TcpClient, string> entry in clientDict) {
+        entry.Key.GetStream().Write(formattedMessage, 0, formattedMessage.Length);
     }
 }

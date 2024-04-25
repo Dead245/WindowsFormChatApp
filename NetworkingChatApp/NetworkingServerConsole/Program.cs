@@ -2,8 +2,10 @@
 using System.Net.Sockets;
 using System.Text;
 
+/*If setting up over local connection, will not work if you use your IP*/
+
 int port = 52100;
-var hostAddress = IPAddress.Parse("127.0.0.1");
+var hostAddress = IPAddress.Any;
 
 Dictionary<TcpClient,string> clientDict = new Dictionary<TcpClient,string>();
 
@@ -50,7 +52,7 @@ void HandleClientConnection(object obj) {
         if (!gotUsername) {
             //Check username
             string username = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-            username = username.Trim();
+            username.Trim();
             username = username.Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
 
             if (username.Equals("") || username.Equals("?:Def")) {
@@ -72,7 +74,6 @@ void HandleClientConnection(object obj) {
         buffer = new byte[1024];
     }
     //Only continues once client disconnects, as Read() completes immediately with '0'
-    Console.WriteLine("Client Disconnected");
     serverNotification($"SERVER: {clientDict[client]} has left!");
     clientDict.Remove(client);
 }
@@ -92,6 +93,7 @@ void HandleClientMessage(byte[] buffer, string username) {
 }
 
 void serverNotification(string strNotif) {
+    Console.WriteLine(strNotif);
 
     byte[] notification = Encoding.UTF8.GetBytes(strNotif, 0, strNotif.Length);
 

@@ -64,7 +64,9 @@ void HandleClientConnection(object obj) {
             clientDict[client] = username;
             clientDict[client]= clientDict[client].Split(new[] { '\0' }, 2)[0]; //.NET string aren't null terminated...
             updateUserList();
-            
+
+            //Clear byte data
+            buffer = new byte[1024];
             continue;
         }
 

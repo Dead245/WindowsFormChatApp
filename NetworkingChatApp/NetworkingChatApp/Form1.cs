@@ -2,7 +2,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-/*If setting up over local connection, will not work if you use your IP*/
+/*If setting up over local connection, will not work if you use your IP
+ This setup could be improved by looking for byte size instead of certain string instances.
+ */
 
 namespace NetworkingChatApp
 {
